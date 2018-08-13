@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Editao</title>
+
+    <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="node_modules/katex/dist/katex.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+      <link rel="stylesheet" href="node_modules/highlight.js/styles/atom-one-dark.css">
+
+    <script>window.$ = window.jQuery = require('jquery');</script>
+  </head>
+  <body>
+    <div class="container no-margin">
+      <div class="row f-height no-margin">
+        <div class="editorSide col-md-6">
+          <textarea class="editor" id="editor" onkeyup="generatePreview()" onchange="generatePreview()"></textarea>
+        </div>
+        <div id="preview" class="previewSide col-md-6">
+          titi
+        </div>
+
+      </div>
+    </div>
+    <div class="bottom-bar">
+      Bottom bar
+    </div>
+    <script>
+      // You can also require other files to run in this process
+      require('./renderer.js')
+      window.jQuery = window.$ = require('jquery');
+    </script>
+    <script src="node_modules/popper.js/dist/umd/popper.js"></script>
+    <script src="node_modules/bootstrap/dist/js/bootstrap.js"></script>
+    <script>
+    function generatePreview() {
+      //  var hl = require("highlight").Highlight;
+        var marked = require("marked")
+        var katex  = require("katex")
+        marked.setOptions({
+          highlight: function(code) {
+              return require('highlight.js').highlightAuto(code).value;
+          },
+          langPrefix: 'hljs language-',
+          mangle: true,
+          
+        });
+
+        var editor = document.getElementById('editor').value;
+      //  katex.renderToString(editor,)
+        document.getElementById('preview').innerHTML= marked(editor);
+    }
+
+    </script>
+
+  </body>
+</html>
