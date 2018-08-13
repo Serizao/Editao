@@ -6,11 +6,13 @@
 
     <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="assets/css/style.css">
+
+    <link rel="stylesheet" href="node_modules/highlight.js/styles/atom-one-dark.css">
     <link rel="stylesheet" href="node_modules/font-awesome/css/font-awesome.min.css">
-      <link rel="stylesheet" href="node_modules/highlight.js/styles/atom-one-dark.css">
     <script>window.$ = window.jQuery = require('jquery');</script>
   </head>
   <body>
+    <input type="hidden" id="paramPreview" value="true">
     <div class="container no-margin">
       <div class="row f-height no-margin">
         <div class="editorSide col-md-6">
@@ -25,7 +27,7 @@
     <div class="row bottom-bar">
       <div class="dropup">
         <button class="btn btn-link btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          titre
+          Titre
         </button>
         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
           <a class="dropdown-item" href="#">Titre 1</a>
@@ -36,8 +38,30 @@
           <a class="dropdown-item" href="#">Titre 6</a>
         </div>
       </div>
-      <button class="btn btn-link btn-sm"><i class="far fa-eye"></i></button>
-
+      <div class="dropup">
+        <button class="btn btn-link btn-sm dropdown-toggle" type="button" id="dropdownMenuButton2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Les listes
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
+          <a class="dropdown-item" href="#">Liste</a>
+          <a class="dropdown-item" href="#">Liste ordonée</a>
+          <a class="dropdown-item" href="#">Liste de tâches</a>
+          <a class="dropdown-item" href="#">Liste de tâches ordonnées</a>
+        </div>
+      </div>
+      <button class="btn btn-link btn-sm" onclick="hidePreview()"><i class="far fa-eye"></i></button>
+      <button class="btn btn-link btn-sm" onclick="addUML()">UML Schéma</button>
+      <button class="btn btn-link btn-sm" onclick="italic()"><i>Italic</i></button>
+      <button class="btn btn-link btn-sm" onclick="gras()"><b>Gras</b></button>
+      <button class="btn btn-link btn-sm" onclick="barre()"><s>Barré</s></button>
+      <button class="btn btn-link btn-sm" onclick="souligne()"><u>Souligné</u></button>
+      <button class="btn btn-link btn-sm" onclick="sup()">e<sup>x</sup></button>
+      <button class="btn btn-link btn-sm" onclick="sub()">e<sub>x</sub></button>
+      <button class="btn btn-link btn-sm" onclick="check()">Case à coché</button>
+      <button class="btn btn-link btn-sm" onclick="picture()">Image</button>
+      <button class="btn btn-link btn-sm" onclick="toc()">Sommaire automatique</button>
+      <button class="btn btn-link btn-sm" onclick="table()">Table</button>
+      <button class="btn btn-link btn-sm" onclick="link()">Liens</button>
     </div>
     <script>
       // You can also require other files to run in this process
@@ -48,6 +72,13 @@
     <script src="node_modules/bootstrap/dist/js/bootstrap.js"></script>
     <script>
     function generatePreview() {
+        var emoji = require('markdown-it-emoji');
+        var footnote = require('markdown-it-footnote');
+        var emoji = require('markdown-it-emoji');
+        var sub = require('markdown-it-sub');
+        var sup = require('markdown-it-sup');
+        var check = require('markdown-it-checkbox');
+        var imsize = require('markdown-it-imsize');
         var md = require('markdown-it')({
           html:         false,        // Enable HTML tags in source
           xhtmlOut:     false,        // Use '/' to close single tags (<br />).                          // This is only for full CommonMark compatibility.
@@ -57,14 +88,35 @@
           typographer:  true,
           quotes: '“”‘’',
           highlight: function (code){ return require('highlight.js').highlightAuto(code).value;}
-        }).use(require('markdown-it-footnote'));
+        }).use(footnote).use( require("markdown-it-anchor"), { permalink: true, permalinkBefore: true, permalinkSymbol: '§' } )
+          .use( require("markdown-it-toc-done-right"))
+          .use(emoji)
+          .use(sub)
+          .use(sup)
+          .use(check)
+          .use(imsize)
+          .use(require('markdown-it-multimd-table'))
+          .use(require('markdown-it-plantuml'));
 
 
         var editor = document.getElementById('editor').value;
       //  katex.renderToString(editor,)
         document.getElementById('preview').innerHTML= md.render(editor);
     }
-
+function hidePreview(){
+  var val = document.getElementById('paramPreview').value;
+  if(val == "true" ){
+    document.getElementById('paramPreview').value = false;
+    document.getElementById('preview').style.display='none';
+    $('.editorSide').removeClass('col-md-6');
+    $('.editorSide').addClass('col-md-12');
+  } else {
+    document.getElementById('paramPreview').value = true;
+    document.getElementById('preview').style.display='block';
+    $('.editorSide').removeClass('col-md-12');
+    $('.editorSide').addClass('col-md-6');
+  }
+}
     </script>
 
   </body>
