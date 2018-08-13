@@ -5,10 +5,9 @@
     <title>Editao</title>
 
     <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="node_modules/katex/dist/katex.css">
     <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="node_modules/font-awesome/css/font-awesome.min.css">
       <link rel="stylesheet" href="node_modules/highlight.js/styles/atom-one-dark.css">
-
     <script>window.$ = window.jQuery = require('jquery');</script>
   </head>
   <body>
@@ -23,8 +22,22 @@
 
       </div>
     </div>
-    <div class="bottom-bar">
-      Bottom bar
+    <div class="row bottom-bar">
+      <div class="dropup">
+        <button class="btn btn-link btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          titre
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+          <a class="dropdown-item" href="#">Titre 1</a>
+          <a class="dropdown-item" href="#">Titre 2</a>
+          <a class="dropdown-item" href="#">Titre 3</a>
+          <a class="dropdown-item" href="#">Titre 4</a>
+          <a class="dropdown-item" href="#">Titre 5</a>
+          <a class="dropdown-item" href="#">Titre 6</a>
+        </div>
+      </div>
+      <button class="btn btn-link btn-sm"><i class="far fa-eye"></i></button>
+
     </div>
     <script>
       // You can also require other files to run in this process
@@ -35,21 +48,21 @@
     <script src="node_modules/bootstrap/dist/js/bootstrap.js"></script>
     <script>
     function generatePreview() {
-      //  var hl = require("highlight").Highlight;
-        var marked = require("marked")
-        var katex  = require("katex")
-        marked.setOptions({
-          highlight: function(code) {
-              return require('highlight.js').highlightAuto(code).value;
-          },
-          langPrefix: 'hljs language-',
-          mangle: true,
-          
-        });
+        var md = require('markdown-it')({
+          html:         false,        // Enable HTML tags in source
+          xhtmlOut:     false,        // Use '/' to close single tags (<br />).                          // This is only for full CommonMark compatibility.
+          breaks:       false,        // Convert '\n' in paragraphs into <br>
+          langPrefix:   'hljs language-',  // CSS language prefix for fenced blocks. Can be                        // useful for external highlighters.
+          linkify:      true,        // Autoconvert URL-like text to links
+          typographer:  true,
+          quotes: '“”‘’',
+          highlight: function (code){ return require('highlight.js').highlightAuto(code).value;}
+        }).use(require('markdown-it-footnote'));
+
 
         var editor = document.getElementById('editor').value;
       //  katex.renderToString(editor,)
-        document.getElementById('preview').innerHTML= marked(editor);
+        document.getElementById('preview').innerHTML= md.render(editor);
     }
 
     </script>

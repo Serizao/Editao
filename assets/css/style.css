@@ -6,19 +6,25 @@ body{
 .previewSide{
   /* border-left:1px solid black; */
   background-color: white;
+  padding-top: 20px;
+  padding-bottom: 8px;
+}
+.editorSide{
+    padding-top: 20px;
 }
 .f-height{
-height: calc(100vh - 10px);
+min-height: calc(100vh - 10px);
+height:100%;
 }
 .bottom-bar{
-  position: absolute;
+  position: fixed;
   z-index: 100;
   bottom: 0px;
   height:30px;
   width: 100%;
   background-color: #ecf0f1;
   border-top:1px #bdc3c7 solid;
-
+  margin: 0px;
 }
 .titlebar {
   -webkit-user-select: none;
@@ -44,4 +50,11 @@ textarea:focus, input:focus{
 }
 .hljs{
   border-radius: 3px;
+}
+code{
+  padding: 2px 4px;
+  font-size: 90%;
+  color: #c7254e;
+  background-color: #f9f2f4;
+  border-radius: 4px;
 }
