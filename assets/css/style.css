@@ -20,7 +20,7 @@ height:100%;
   position: fixed;
   z-index: 100;
   bottom: 0px;
-  height:30px;
+  height:auto;
   width: 100%;
   background-color: #ecf0f1;
   border-top:1px #bdc3c7 solid;
@@ -45,8 +45,9 @@ height:100%;
   resize: none;
   border: 0px;
 }
-textarea:focus, input:focus{
-    outline: none;
+textarea:focus, input:focus, button:focus, i:focus{
+    outline: none!important;
+    box-shadow: none!important;
 }
 .hljs{
   border-radius: 3px;
@@ -57,4 +58,14 @@ code{
   color: #c7254e;
   background-color: #f9f2f4;
   border-radius: 4px;
+}
+blockquote {
+    padding: 0 1rem;
+    margin-left: 0;
+    color: #819198;
+    border-left: .3rem solid #dce6f0;
+  }
+input[type=checkbox], input[type=radio] {
+  margin-right: 5px;
+  margin-left: 5px;
 }
