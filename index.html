@@ -9,22 +9,28 @@
     <link rel="stylesheet" href="assets/css/style.css">
     <script>window.$ = window.jQuery = require('jquery');</script>
   </head>
-  <body>
+  <body onload="onLoad()">
     <input type="hidden" id="paramPreview" value="true">
+    <input type="hidden" id="bottomHidden" value="true">
+    <input type="hidden" id="leftHidden" value="true">
+    <input type="hidden" id="emplacement" value="true">
     <div class="container no-margin">
+      <div id="expandSideMenu" class=""><a href="#"> > </a></div>
       <div class="row f-height no-margin">
         <div class="editorSide col-md-6">
           <textarea class="editor" id="editor" onkeyup="generatePreview()" onchange="generatePreview()"></textarea>
         </div>
         <div id="preview" class="previewSide col-md-6">
-          titi
+
         </div>
 
       </div>
     </div>
-    <div class="row bottom-bar">
+
+    <div id="bottom-bar"  class="row bottom-bar">
+
       <div class="dropup">
-        <button class="btn btn-link btn-sm dropdown-toggle" data-toggle="tooltip" data-placement="top" title="Les titres" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <button class="btn btn-link btn-sm dropdown-toggle"   title="Les titres" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           Titre
         </button>
         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
@@ -36,32 +42,32 @@
           <a class="dropdown-item" onclick="insertB('###### ')" href="#">Titre 6</a>
         </div>
       </div>
-      <button class="btn btn-link btn-sm" onclick="insertBoth('*','*','I')"><i>Italic</i></button>
-      <button class="btn btn-link btn-sm" onclick="insertBoth('**','**','G')"><b>Gras</b></button>
-      <button class="btn btn-link btn-sm" onclick="insertBoth('~~','~~','barré')"><s>Barré</s></button>
+      <button class="btn btn-link btn-sm" onclick="insertBoth('*','*','Italic')"><i>Italic</i></button>
+      <button class="btn btn-link btn-sm" onclick="insertBoth('**','**','Gras')"><b>Gras</b></button>
+      <button class="btn btn-link btn-sm" onclick="insertBoth('~~','~~','Barré')"><s>Barré</s></button>
       <button class="btn btn-link btn-sm" onclick="souligne()"><u>Souligné</u></button>
       <button class="btn btn-link btn-sm"  onclick="insertBoth('^','^','e')">e<sup>x</sup></button>
       <button class="btn btn-link btn-sm" onclick="insertBoth('~','~','e')">e<sub>x</sub></button>
       <div class="dropup">
-        <button class="btn btn-link btn-sm dropdown-toggle" data-toggle="tooltip" data-placement="top" title="Les listes" type="button" id="dropdownMenuButton2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <button class="btn btn-link btn-sm dropdown-toggle"  title="Les listes" type="button" id="dropdownMenuButton2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           <i class="fa fa-list-ul"></i>
         </button>
         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
           <a class="dropdown-item" onclick="insertB('- ')" href="#">Liste</a>
-          <a class="dropdown-item" onclick="insertB('1. ')"href="#">Liste ordonée</a>
+          <a class="dropdown-item" onclick="insertB('1. ')" href="#">Liste ordonée</a>
           <a class="dropdown-item" onclick="insertB('- [ ] ')" href="#">Liste de tâches</a>
-          <a class="dropdown-item" onclick="insertB('1. [ ] ')"href="#">Liste de tâches ordonnées</a>
+          <a class="dropdown-item" onclick="insertB('1. [ ] ')" href="#">Liste de tâches ordonnées</a>
         </div>
       </div>
       <div class="dropup">
-        <button class="btn btn-link btn-sm dropdown-toggle" data-toggle="tooltip" data-placement="top" title="Les flèches" type="button" id="dropdownMenuButton3" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <button class="btn btn-link btn-sm dropdown-toggle" title="Les flèches" type="button" id="dropdownMenuButton3" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           <i class="fa fa-arrow-right"></i>
         </button>
         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton3">
           <a class="dropdown-item" onclick="insertB('--> ')" href="#"> → </a>
-          <a class="dropdown-item" onclick="insertB('<--> ')"href="#"> ↔ </a>
+          <a class="dropdown-item" onclick="insertB('<--> ')" href="#"> ↔ </a>
           <a class="dropdown-item" onclick="insertB('==> ')" href="#"> ⇒ </a>
-          <a class="dropdown-item" onclick="insertB('<==> ')"href="#"> ⇔ </a>
+          <a class="dropdown-item" onclick="insertB('<==> ')" href="#"> ⇔ </a>
         </div>
       </div>
       <button class="btn btn-link btn-sm" data-toggle="tooltip" data-placement="top" title="Ajouter une case à cocher" onclick="insertB('[ ] ')"><i class="fa fa-check-square"></i></button>
@@ -71,6 +77,17 @@
       <button class="btn btn-link btn-sm" data-toggle="tooltip" data-placement="top" title="Ajouter un lien" onclick="insertA('[nom du lien](http://)')"><i class="fa fa-link"></i></button>
       <button class="btn btn-link btn-sm" data-toggle="tooltip" data-placement="top" title="Ajouter une citation" onclick="insertB('> ')"><i class="fa fa-quote-left"></i></button>
       <button class="btn btn-link btn-sm" data-toggle="tooltip" data-placement="top" title="Ajouter un schéma UML" onclick="insertA('@startuml\nbob->toto\nbob -->toto\ntoto --X bob\n@enduml')">UML Schéma</button>
+      <div class="dropup">
+        <button class="btn btn-link btn-sm dropdown-toggle" title="Exporter le document"  type="button" id="dropdownMenuButton3" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <i class="fa fa-upload"></i>
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton3">
+          <a class="dropdown-item"  href="#"> Exporter en .docx </a>
+          <a class="dropdown-item" href="#"> Export en .pdf </a>
+        </div>
+      </div>
+      <button class="btn btn-link btn-sm" data-toggle="tooltip" data-placement="top" title="Sauvegarder" ><i class="fa fa-save"></i></button>
+
       <button class="btn btn-outline-primary btn-sm" id="previewButton" data-toggle="tooltip" data-placement="top" title="Activer/Désactiver la prévisulisation" onclick="hidePreview()"><i class="fa fa-columns"></i></button>
 
     </div>
@@ -83,7 +100,10 @@
     <script src="node_modules/popper.js/dist/umd/popper.js"></script>
     <script src="node_modules/bootstrap/dist/js/bootstrap.js"></script>
     <script>
-
+    $(function () {
+      $('[data-toggle="tooltip"]').tooltip()
+    })
+    var timeout;
     function generatePreview() {
         var emoji = require('markdown-it-emoji');
         var footnote = require('markdown-it-footnote');
@@ -167,8 +187,26 @@ function insertBoth(before,after, ex=''){
   var textAfterEnd  = v2.substring( cursorPosEnd+before.length , v2.length);
   $('#editor').val( textBeforeEnd+ after +textAfterEnd );
 
-  generatePreview()
+  generatePreview();
 }
+function mouse(p){
+  var element1 = document.getElementById("expandSideMenu");
+  var element2 = document.getElementById('bottom-bar');
+  element1.classList.remove("expandSideMenuTransition");
+  element2.classList.remove("bottomBarTransition");
+}
+setTimeout(function () {
+
+}, 10);
+function onLoad(){
+  setInterval(hideMenu, 6000);
+  addEventListener('mousemove', mouse, false);
+}
+function hideMenu(){
+  $('#expandSideMenu').addClass('expandSideMenuTransition');
+  $('.bottom-bar').addClass('bottomBarTransition');
+}
+
    </script>
 
   </body>
