@@ -73,7 +73,15 @@
         </div>
       </div>
       <button class="btn btn-link btn-sm" data-toggle="tooltip" data-placement="top" title="Ajouter une case à cocher" onclick="insertB('[ ] ')"><i class="fa fa-check-square"></i></button>
-      <button class="btn btn-link btn-sm" data-toggle="tooltip" data-placement="top" title="Ajouter une image" onclick="insertA('![A cat](/files/cat.jpg=100x) ')"onclick="picture()"><i class="fa fa-picture-o"></i></button>
+      <div class="dropup">
+        <button class="btn btn-link btn-sm dropdown-toggle" title="Les flèches" type="button" id="dropdownMenuButton4" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <i class="fa fa-picture-o"></i>
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton4">
+          <a class="dropdown-item" onclick="imageComputer()" href="#"><i class="fa fa-desktop"></i> Depuis l'ordinateur  </a>
+          <a class="dropdown-item" href="#" data-toggle="modal" data-target="#exampleModal"><i class="fa fa-globe"></i> Depuis internet</a>
+        </div>
+      </div>
       <button class="btn btn-link btn-sm" data-toggle="tooltip" data-placement="top" title="Ajouter un sommaire automatique" onclick="insertA('${toc}')"><i class="fa fa-list-ol"></i></button>
       <button class="btn btn-link btn-sm" data-toggle="tooltip" data-placement="top" title="Ajouter un tableau" onclick="insertA('| Tables   |      Are      |  Cool | \n|----------|:-------------:|------:|\n| col 1 is |  left-aligned | $1600 |\n| col 2 is |    centered   |   $12 |\n| col 3 is | right-aligned |    $1 |')">Tableau</button>
       <button class="btn btn-link btn-sm" data-toggle="tooltip" data-placement="top" title="Ajouter un lien" onclick="insertA('[nom du lien](http://)')"><i class="fa fa-link"></i></button>
@@ -94,6 +102,27 @@
 
     </div>
 
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Entrez l'addresse internet de l'image</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <input type="text" class="form-control" id="imgInt">
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary" onclick="imageInternet()" >Inserer</button>
+          </div>
+        </div>
+      </div>
+    </div>
     <script>
       // You can also require other files to run in this process
       require('./renderer.js')
@@ -212,6 +241,8 @@ function onLoad(){
   addEventListener('mousemove', mouse, false);
 }
 function hideMenu(){
+
+  $('.dropdown-menu').removeClass('show');
   $('#expandSideMenu').addClass('expandSideMenuTransition');
   $('.bottom-bar').addClass('bottomBarTransition');
 }
@@ -275,10 +306,10 @@ function display(state,msg,time=true){
       $('#display').html(html);
 
       if(time){
-        $("."+type).fadeTo(2000, 500).slideUp(500, function(){    $("."+type).slideUp(500);   });
+        $("."+type).fadeTo(2000, 350).slideUp(350, function(){    $("."+type).slideUp(350);   });
       }
 }
-$(document).delegate('#editor', 'keydown', function(e) { 
+$(document).delegate('#editor', 'keydown', function(e) {
   var keyCode = e.keyCode || e.which;
 
   if (keyCode == 9) {
@@ -296,6 +327,27 @@ $(document).delegate('#editor', 'keydown', function(e) {
     $(this).get(0).selectionEnd = start + 1;
   }
 });
+$(window).keypress(function(event) {
+    if (!(event.which == 115 && event.ctrlKey) && !(event.which == 19)) return true;
+    saveAsMd();
+    event.preventDefault();
+    return false;
+});
+function httpGet(theUrl)
+{
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.open( "GET", theUrl, false ); // false for synchronous request
+    xmlHttp.send( null );
+    return btoa(xmlHttp.responseText);
+}
+function imageInternet(){
+var address = $('#imgInt').val()
+if(address!='' && address != 'undefined'){
+  
+}else {
+  display('error','Le champ pour l\'adresse internet est vide ou non rempli');
+}
+}
    </script>
 
   </body>
