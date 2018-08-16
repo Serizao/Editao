@@ -14,6 +14,8 @@
     <input type="hidden" id="bottomHidden" value="true">
     <input type="hidden" id="leftHidden" value="true">
     <input type="hidden" id="emplacement" value="true">
+    <input type="hidden" id="path" value="">
+    <div id="display"></div>
     <div class="container no-margin">
       <div id="expandSideMenu" class=""><a href="#"> > </a></div>
       <div class="row f-height no-margin">
@@ -82,11 +84,11 @@
           <i class="fa fa-upload"></i>
         </button>
         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton3">
-          <a class="dropdown-item"  href="#"> Exporter en .docx </a>
-          <a class="dropdown-item" href="#"> Export en .pdf </a>
+          <a class="dropdown-item"  onclick="saveAsDocx()" href="#"> Exporter en .docx </a>
+          <a class="dropdown-item" onclick="saveAsPdf()" href="#"> Export en .pdf </a>
         </div>
       </div>
-      <button class="btn btn-link btn-sm" data-toggle="tooltip" data-placement="top" title="Sauvegarder" ><i class="fa fa-save"></i></button>
+      <button class="btn btn-link btn-sm" data-toggle="tooltip" data-placement="top" title="Sauvegarder" onclick="saveAsMd()"><i class="fa fa-save"></i></button>
 
       <button class="btn btn-outline-primary btn-sm" id="previewButton" data-toggle="tooltip" data-placement="top" title="Activer/Désactiver la prévisulisation" onclick="hidePreview()"><i class="fa fa-columns"></i></button>
 
@@ -99,7 +101,10 @@
     </script>
     <script src="node_modules/popper.js/dist/umd/popper.js"></script>
     <script src="node_modules/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="node_modules/html-docx-js/dist/html-docx.js"></script>
+
     <script>
+    const ipc = require('electron').ipcRenderer
     $(function () {
       $('[data-toggle="tooltip"]').tooltip()
     })
@@ -121,7 +126,7 @@
           typographer:  true,
           quotes: '“”‘’',
           highlight: function (code){ return require('highlight.js').highlightAuto(code).value;}
-        }).use(footnote).use( require("markdown-it-anchor"), { permalink: true, permalinkBefore: true, permalinkSymbol: '§' } )
+        }).use(footnote).use( require("markdown-it-anchor"), { permalink: true, permalinkBefore: true, permalinkSymbol: '' } )
           .use( require("markdown-it-toc-done-right"))
           .use(emoji)
           .use(sub)
@@ -206,7 +211,69 @@ function hideMenu(){
   $('#expandSideMenu').addClass('expandSideMenuTransition');
   $('.bottom-bar').addClass('bottomBarTransition');
 }
+function saveAsPdf2(content){
+  const ipc = require('electron').ipcRenderer
+  ipc.send("printPDF", content);
+}
+function saveAsPdf(){
+  saveAsPdf2($('#preview').html())
+}
+function saveAsDocx(){
+  const ipc = require('electron').ipcRenderer
+  ipc.send("readyToPrintDOC", $('#preview').html());
+}
+function saveAsMd(){
+  const ipc = require('electron').ipcRenderer
+  var path = $('#path').val()
+  if(path==''){
+    ipc.send("saveAsMd", $('#editor').val());
+  } else {
+    ipc.send("saveMd", $('#editor').val(),path);
+  }
+}
+ipc.on('wrote-md', function (event, path) {
+  $('#path').val(path);
+  display('success',' Votre fichier a bien été sauvegardé')
+})
+ipc.on('wrote-pdf', function (event, path) {
+  $('#path').val(path);
+  display('success',' Votre fichier a bien été sauvegardé')
+})
+ipc.on('wrote-doc', function (event, path) {
+  $('#path').val(path);
+  display('success',' Votre fichier a bien été sauvegardé')
+})
+function display(state,msg,time=true){
+  add='';
+  if(state=='success'){
+      type = "alert-success";
+      title='Succès';
+  }
+  if(state=='error'){
+      type = "alert-danger";
+      title='Erreur';
+  }
+  if(state=='info'){
+      type = "alert-info";
+      title='Info';
+  }
+  if(state=='warning'){
+      type = "alert-warning";
+      title='Attention';
+  }
 
+  html= '<div class="alert '+type+'" role="alert"> \
+         <button type="button" class="close" data-dismiss="alert" aria-label="Close"> \
+            <span aria-hidden="true">&times;</span>\
+         </button>\
+          <p>'+msg+'</p>\
+      </div>'+add;
+      $('#display').html(html);
+
+      if(time){
+        $("."+type).fadeTo(2000, 500).slideUp(500, function(){    $("."+type).slideUp(500);   });
+      }
+}
    </script>
 
   </body>

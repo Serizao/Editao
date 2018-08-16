@@ -1,0 +1,32 @@
+<head>
+
+  <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="node_modules/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="node_modules/highlight.js/styles/atom-one-dark.css">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <style>
+  body{
+    background-color: white;
+    height: 100%;
+    width: 100%;
+
+  }
+  </style>
+ </head>
+
+<body>
+    <script>
+        const ipcRenderer = require("electron").ipcRenderer;
+
+        ipcRenderer.on("printPDF", (event, content) => {
+            document.body.innerHTML = content;
+
+            ipcRenderer.send("readyToPrintPDF");
+        });
+        ipcRenderer.on("printDOC", (event, content) => {
+            document.body.innerHTML = content;
+
+            ipcRenderer.send("readyToPrintDOC");
+        });
+    </script>
+</body>
