@@ -75,12 +75,14 @@ ipc.on("readyToPrintDOC", (event, content) => {
       ]
     }
     dialog.showSaveDialog(options, function (docpath) {
+        if(!docpath){
   fs.writeFile(docpath, buffer, function (error) {
     if (error) {
       throw error
     }
   })
   event.sender.send('wrote-doc', pdfPath)
+}
 })
 })
 });
@@ -97,6 +99,7 @@ ipc.on("readyToPrintPDF", (event) => {
         ]
       }
       dialog.showSaveDialog(options, function (pdfPath) {
+          if(pdfPath){
         workerWindow.webContents.printToPDF({printBackground: true,landscape: true}, function (error, data) {
             if (error) throw error
             fs.writeFile(pdfPath, data, function (error) {
@@ -107,6 +110,7 @@ ipc.on("readyToPrintPDF", (event) => {
           //  shell.openItem(pdfPath)
             event.sender.send('wrote-pdf', pdfPath)
         })
+      }
     })
 });
 ipc.on("saveAsMd", (event,content) => {
@@ -119,12 +123,14 @@ ipc.on("saveAsMd", (event,content) => {
         ]
       }
       dialog.showSaveDialog(options, function (mdPath) {
+          if(mdPath){
             fs.writeFile(mdPath, content, function (error) {
               if (error) {
                 throw error
               }
             })
               event.sender.send('wrote-md', mdPath)
+            }
         })
 
 });
