@@ -23,10 +23,10 @@
 
             ipcRenderer.send("readyToPrintPDF");
         });
-        ipcRenderer.on("printDOC", (event, content) => {
-            document.body.innerHTML = content;
-
-            ipcRenderer.send("readyToPrintDOC");
-        });
+        // ipcRenderer.on("printDOC", (event, content) => {
+        //     document.body.innerHTML = content;
+        //
+        //     ipcRenderer.send("readyToPrintDOC");
+        // });
     </script>
 </body>
