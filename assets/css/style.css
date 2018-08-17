@@ -83,7 +83,7 @@ input[type=checkbox], input[type=radio] {
   margin-right: 5px;
   margin-left: 5px;
 }
-#expandSideMenu{
+ #expandSideMenu{
   position: absolute;
   left: -16px;
   top:calc( 50% - 15px);
@@ -94,12 +94,13 @@ input[type=checkbox], input[type=radio] {
   background-color: #ecf0f1;
   border:1px #bdc3c7 solid;
   color: #007bff;
-  z-index: 1000;
+  z-index: 100;
   transition-property: left;
   transition-duration: 0.6s;
   transition-timing-function: linear;
   transition-delay: 0s;
 }
+
 
 .expandSideMenuTransition{
   left:-40px!important;
@@ -114,4 +115,38 @@ a:hover{
 }
 .btn-link:hover{
   text-decoration: none;
+}
+.leftMenu{
+  position: absolute;
+    background-color: white;
+    top: 0px;
+
+    bottom: 0px;
+    left:-600px;
+    z-index:101;
+    transition-property: left;
+    transition-duration: 0.8s;
+    transition-timing-function: linear;
+    transition-delay: 0s;
+    padding:0px;
+    overflow:auto;
+}
+.list-group{
+  padding: 0px;
+  margin-top:56px;
+}
+.list-group-item:hover{
+  background-color: #7f8c8d;
+  color:white;
+  cursor: pointer;
+}
+.closeLeftMenu{
+  position: fixed;
+  z-index: 200;
+  padding-right: 25px;
+  padding-left: 0px;
+  padding-bottom: 10px;
+  padding-top: 10px;
+  background-color: white;
+  border-bottom: 1px solid black;
 }

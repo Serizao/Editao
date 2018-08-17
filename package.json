@@ -50,6 +50,7 @@
     "phantom-html2pdf": "^4.0.1",
     "popper.js": "^1.14.4",
     "prismjs": "^1.15.0",
-    "pygmentize-bundled": "^2.3.0"
+    "pygmentize-bundled": "^2.3.0",
+    "sha1": "^1.1.1"
   }
 }

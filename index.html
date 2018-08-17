@@ -14,23 +14,30 @@
     <input type="hidden" id="bottomHidden" value="true">
     <input type="hidden" id="leftHidden" value="true">
     <input type="hidden" id="emplacement" value="true">
+    <input type="hidden" id="saved" value="false">
     <input type="hidden" id="path" value="">
     <div id="display"></div>
     <div class="container no-margin">
-      <div id="expandSideMenu" class=""><a href="#"> > </a></div>
+      <div class="leftMenu col-md-3">
+        <div class="col-md-3 closeLeftMenu">
+            <button class="btn btn-outline-primary pull-right" onclick="closeLeftMenu()" data-toggle="tooltip" data-placement="top" title="Fermer le menu"><i class="fa fa-times"></i></button>
+            <button class="btn btn-outline-primary pull-right" data-toggle="tooltip" data-placement="top" title="Créer un portefeuille de documents" onclick="closeLeftMenu()"><i class="fa fa-plus"></i></button>
+            <button class="btn btn-outline-primary pull-right" data-toggle="tooltip" data-placement="top" title="Ouvrir un porteufeuil de document" onclick="closeLeftMenu()"><i class="fa fa-folder-open"></i></button>
+        </div>
+        <ul class="list-group col-md-12">
+          <li class="list-group-item">Cras justo odio</li>
+        </ul>
+      </div>
+      <div id="expandSideMenu" class=""><a href="#" onclick="displayleftMenu()"> > </a></div>
       <div class="row f-height no-margin">
         <div class="editorSide col-md-6">
           <textarea class="editor" id="editor" onkeyup="generatePreview()" onchange="generatePreview()"></textarea>
         </div>
         <div id="preview" class="previewSide col-md-6">
-
         </div>
-
       </div>
     </div>
-
     <div id="bottom-bar"  class="row bottom-bar">
-
       <div class="dropup">
         <button class="btn btn-link btn-sm dropdown-toggle"   title="Les titres" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           Titre
@@ -97,12 +104,9 @@
         </div>
       </div>
       <button class="btn btn-link btn-sm" data-toggle="tooltip" data-placement="top" title="Sauvegarder" onclick="saveAsMd()"><i class="fa fa-save"></i></button>
-      <button class="btn btn-link btn-sm" data-toggle="tooltip" data-placement="top" title="Ouvrir un fichier" onclick="saveAsMd()"><i class="fa fa-folder-open"></i></button>
+      <button class="btn btn-link btn-sm" data-toggle="tooltip" data-placement="top" title="Ouvrir un fichier" onclick="openFile()"><i class="fa fa-folder-open"></i></button>
       <button class="btn btn-outline-primary btn-sm" id="previewButton" data-toggle="tooltip" data-placement="top" title="Activer/Désactiver la prévisulisation" onclick="hidePreview()"><i class="fa fa-columns"></i></button>
-
     </div>
-
-
     <!-- Modal -->
     <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog" role="document">
@@ -117,7 +121,7 @@
             <input type="text" class="form-control" id="imgInt">
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-secondary closingButton" data-dismiss="modal">Close</button>
             <button type="button" class="btn btn-primary" onclick="imageInternet()" >Inserer</button>
           </div>
         </div>
@@ -131,51 +135,54 @@
     <script src="node_modules/popper.js/dist/umd/popper.js"></script>
     <script src="node_modules/bootstrap/dist/js/bootstrap.js"></script>
     <script src="node_modules/html-docx-js/dist/html-docx.js"></script>
-
     <script>
+    const sha1 = require('sha1');
     const ipc = require('electron').ipcRenderer
     $(function () {
-      $('[data-toggle="tooltip"]').tooltip()
+     $('[data-toggle="tooltip"]').tooltip()
     })
+    $(document).on('hover', '[rel=tooltip]', function () { $(this).tooltip('show'); });
     var timeout;
     function generatePreview() {
-        var emoji = require('markdown-it-emoji');
-        var footnote = require('markdown-it-footnote');
-        var emoji = require('markdown-it-emoji');
-        var sub = require('markdown-it-sub');
-        var sup = require('markdown-it-sup');
-        var check = require('markdown-it-checkbox');
-        var imsize = require('markdown-it-imsize');
-        var md = require('markdown-it')({
-          html:         false,        // Enable HTML tags in source
-          xhtmlOut:     false,        // Use '/' to close single tags (<br />).                          // This is only for full CommonMark compatibility.
-          breaks:       false,        // Convert '\n' in paragraphs into <br>
-          langPrefix:   'hljs language-',  // CSS language prefix for fenced blocks. Can be                        // useful for external highlighters.
-          linkify:      true,        // Autoconvert URL-like text to links
-          typographer:  true,
-          quotes: '“”‘’',
-          highlight: function (code){ return require('highlight.js').highlightAuto(code).value;}
-        }).use(footnote).use( require("markdown-it-anchor"), { permalink: true, permalinkBefore: true, permalinkSymbol: '' } )
-          .use( require("markdown-it-toc-done-right"))
-          .use(emoji)
-          .use(sub)
-          .use(sup)
-          .use(check)
-          .use(imsize)
-          .use(require('markdown-it-multimd-table'))
-          .use(require('markdown-it-plantuml'))
-          .use(require('markdown-it-smartarrows'));
-
-
-        var editor = document.getElementById('editor').value;
-      //  katex.renderToString(editor,)
-        document.getElementById('preview').innerHTML= md.render(editor);
+      var editor = document.getElementById('editor').value;
+      var preview = document.getElementById('paramPreview').value
+    //$('#saved').val(sha1(editor))
+        if(preview == 'true'){
+            var emoji = require('markdown-it-emoji');
+            var footnote = require('markdown-it-footnote');
+            var emoji = require('markdown-it-emoji');
+            var sub = require('markdown-it-sub');
+            var sup = require('markdown-it-sup');
+            var check = require('markdown-it-checkbox');
+            var imsize = require('markdown-it-imsize');
+            var md = require('markdown-it')({
+              html:         false,        // Enable HTML tags in source
+              xhtmlOut:     false,        // Use '/' to close single tags (<br />).                          // This is only for full CommonMark compatibility.
+              breaks:       false,        // Convert '\n' in paragraphs into <br>
+              langPrefix:   'hljs language-',  // CSS language prefix for fenced blocks. Can be                        // useful for external highlighters.
+              linkify:      true,        // Autoconvert URL-like text to links
+              typographer:  true,
+              quotes: '“”‘’',
+              highlight: function (code){ return require('highlight.js').highlightAuto(code).value;}
+            }).use(footnote).use( require("markdown-it-anchor"), { permalink: true, permalinkBefore: true, permalinkSymbol: '' } )
+              .use( require("markdown-it-toc-done-right"))
+              .use(emoji)
+              .use(sub)
+              .use(sup)
+              .use(check)
+              .use(imsize)
+              .use(require('markdown-it-multimd-table'))
+              .use(require('markdown-it-plantuml'))
+              .use(require('markdown-it-smartarrows'));
+          //  katex.renderToString(editor,)
+            document.getElementById('preview').innerHTML= md.render(editor);
+        }
     }
 function hidePreview(){
   var val = document.getElementById('paramPreview').value;
   if(val == "true" ){
-    $('#editor').attr('onclick','')
-    $('#editor').attr('onkeyup','')
+    // $('#editor').attr('onclick','')
+    // $('#editor').attr('onkeyup','')
     document.getElementById('paramPreview').value = false;
     document.getElementById('preview').style.display='none';
     $('.editorSide').removeClass('col-md-6');
@@ -183,14 +190,15 @@ function hidePreview(){
     $('#previewButton').removeClass('btn-outline-primary')
     $('#previewButton').addClass('btn-link')
   } else {
-    $('#editor').attr('onclick','generatePreview()')
-    $('#editor').attr('onkeyup','generatePreview()')
+    // $('#editor').attr('onclick','generatePreview()')
+    // $('#editor').attr('onkeyup','generatePreview()')
     document.getElementById('paramPreview').value = true;
     document.getElementById('preview').style.display='block';
     $('.editorSide').removeClass('col-md-12');
     $('.editorSide').addClass('col-md-6');
     $('#previewButton').addClass('btn-outline-primary')
     $('#previewButton').removeClass('btn-link')
+    generatePreview();
   }
 }
 function insertB(insert){
@@ -224,7 +232,6 @@ function insertBoth(before,after, ex=''){
   var textBeforeEnd = v2.substring(0,  cursorPosEnd+before.length );
   var textAfterEnd  = v2.substring( cursorPosEnd+before.length , v2.length);
   $('#editor').val( textBeforeEnd+ after +textAfterEnd );
-
   generatePreview();
 }
 function mouse(p){
@@ -233,9 +240,6 @@ function mouse(p){
   element1.classList.remove("expandSideMenuTransition");
   element2.classList.remove("bottomBarTransition");
 }
-setTimeout(function () {
-
-}, 10);
 function onLoad(){
   setInterval(hideMenu, 6000);
   addEventListener('mousemove', mouse, false);
@@ -268,6 +272,7 @@ function saveAsMd(){
 }
 ipc.on('wrote-md', function (event, path) {
   $('#path').val(path);
+  $('#saved').val(sha1($('#editor').val()))
   display('success',' Votre fichier a bien été sauvegardé')
 })
 ipc.on('wrote-pdf', function (event, path) {
@@ -296,7 +301,6 @@ function display(state,msg,time=true){
       type = "alert-warning";
       title='Attention';
   }
-
   html= '<div class="alert '+type+'" role="alert"> \
          <button type="button" class="close" data-dismiss="alert" aria-label="Close"> \
             <span aria-hidden="true">&times;</span>\
@@ -343,10 +347,52 @@ function httpGet(theUrl)
 function imageInternet(){
 var address = $('#imgInt').val()
 if(address!='' && address != 'undefined'){
-  
+insertA('!['+address+']('+address+')');
+$('.closingButton').click()
 }else {
   display('error','Le champ pour l\'adresse internet est vide ou non rempli');
 }
+}
+function imageComputer(){
+  ipc.send('open-file-dialog')
+}
+ipc.on('selected-file', function (event,file) {
+  if(file){
+    insertA('!['+file+']('+file+')');
+  }
+});
+function openFile(){
+  if(!Saved()){
+     if (confirm("Le document actuel n'est pas sauvegardé voulez vous le fermer quand même ?")) {
+       ipc.send('openFile');
+    }
+  }else {
+    ipc.send('openFile');
+  }
+}
+ipc.on('selected-open-file',function(event,fileData,filePath){
+    $('#editor').val(fileData);
+    $('#path').val(filePath);
+    $('#saved').val(sha1(fileData))
+    generatePreview()
+})
+function Saved(){
+  if($('#editor').val()){
+    var editor = sha1(document.getElementById('editor').value);
+    var sum = document.getElementById('saved').value;
+    if(sum == editor) return true
+    else return false
+  } else{
+    return true
+  }
+}
+function displayleftMenu(){
+
+  $('.leftMenu').css('left','0px');
+}
+function closeLeftMenu(){
+
+  $('.leftMenu').css('left','-600px');
 }
    </script>
 
