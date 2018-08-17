@@ -2,10 +2,8 @@
 const {app, BrowserWindow, shell,Menu} = require('electron')
 const ipc = require('electron').ipcMain
 const dialog = require('electron').dialog
-const os = require("os");
 const fs = require("fs");
 const path = require("path");
-const htmlDocx = require('html-docx-js');
 
 
 // Keep a global reference of the window object, if you don't, the window will
