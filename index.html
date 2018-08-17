@@ -168,7 +168,6 @@
               highlight: function (str, lang) {
                           if (lang && hljs.getLanguage(lang)) {
                             try {
-                              console.log(str)
                               return hljs.highlight(lang, str).value;
                             } catch (__) {}
                           }
@@ -185,6 +184,7 @@
               .use(require('markdown-it-multimd-table'))
               .use(require('markdown-it-plantuml'))
               .use(require('markdown-it-smartarrows'));
+          //    md.disable('entity')
           //  katex.renderToString(editor,)
           if(retour){
             return md.render(editor)
@@ -307,7 +307,7 @@ function saveAsMd(){
   const ipc = require('electron').ipcRenderer
   var path = $('#path').val()
   if(path==''){
-    ipc.send("saveAsMd",generatePreview(true));
+    ipc.send("saveAsMd",$('#editor').val());
   } else {
     ipc.send("saveMd", $('#editor').val(),path);
   }
@@ -389,7 +389,7 @@ function httpGet(theUrl)
 function imageInternet(){
 var address = $('#imgInt').val()
 if(address!='' && address != 'undefined'){
-insertA('!['+address+']('+address+')');
+insertA('!['+address+']('+address+' =500x)');
 $('.closingButton').click()
 }else {
   display('error','Le champ pour l\'adresse internet est vide ou non rempli');
@@ -400,7 +400,9 @@ function imageComputer(){
 }
 ipc.on('selected-file', function (event,file) {
   if(file){
-    insertA('!['+file+']('+file+')');
+    file = file[0].replace(/\\/gi,'/');
+    console.log(file);
+    insertA('![Légende de l\'image]('+file+' =500x)');
   }
 });
 function openFile(){

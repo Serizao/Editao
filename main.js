@@ -7,13 +7,14 @@ const fs = require("fs");
 const path = require("path");
 const htmlDocx = require('html-docx-js');
 
+
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow
 let workerWindow
 function createWindow () {
   // Create the browser window.
-  mainWindow = new BrowserWindow({width: 800, height: 600,titleBarStyle: 'hidden'})
+  mainWindow = new BrowserWindow({height:600,width:1024,minWidth: 1024, minHeight:600,titleBarStyle: 'hidden', icon: path.join(__dirname, 'assets/icons/png/64x64.png')})
 
   // and load the index.html of the app.
   mainWindow.loadFile('index.html')
@@ -28,15 +29,17 @@ function createWindow () {
     // when you should delete the corresponding element.
     mainWindow = null
   })
-  workerWindow = new BrowserWindow();
-workerWindow.loadURL("file://" + __dirname + "/worker.html");
-workerWindow.hide();
-workerWindow.webContents.openDevTools();
-workerWindow.on("closed", () => {
-    workerWindow = undefined;
-});
+createWorker();
 }
-
+function createWorker(){
+  workerWindow = new BrowserWindow();
+  workerWindow.loadURL("file://" + __dirname + "/worker.html");
+  workerWindow.hide();
+  workerWindow.webContents.openDevTools();
+  workerWindow.on("closed", () => {
+      workerWindow = undefined;
+  });
+}
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
@@ -60,6 +63,7 @@ app.on('activate', function () {
 })
 
 ipc.on("printPDF", (event, content) => {
+  //  createWorker()
     workerWindow.webContents.send("printPDF", content);
 });
 // ipc.on("printDOC", (event, content) => {
