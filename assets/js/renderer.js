@@ -274,3 +274,58 @@ function closeLeftMenu(){
 
 $('.leftMenu').css('left','-600px');
 }
+(function () {
+       var holder = document.getElementById('editor');
+       var body = document.getElementById('body');
+       var prevew = document.getElementById('preview');
+
+       holder.ondragover = () => {
+           return false;
+       };
+
+       holder.ondragleave = () => {
+           return false;
+       };
+
+       holder.ondragend = () => {
+           return false;
+       };
+       body.ondragover = () => {
+           return false;
+       };
+
+       body.ondragleave = () => {
+           return false;
+       };
+
+       body.ondragend = () => {
+           return false;
+       };
+       preview.ondragover = () => {
+           return false;
+       };
+
+       preview.ondragleave = () => {
+           return false;
+       };
+
+       preview.ondragend = () => {
+           return false;
+       };
+       body.ondrop = (e) => {
+         e.preventDefault();
+       }
+       preview.ondrop = (e) => {
+         e.preventDefault();
+       }
+       holder.ondrop = (e) => {
+           e.preventDefault();
+
+           for (let f of e.dataTransfer.files) {
+
+               insertA('!['+f.name+']('+f.path+' =300x)')
+           }
+
+           return false;
+       };
+   })();
