@@ -52,8 +52,8 @@ function generatePreview(retour=false) {
   var regex = /:(\w*$)/;
   var declencheur = editor.match(/:(\w*$)/)
   var open = document.getElementById('contextMenu').value
-  var words = editor.match(/\S+/g).length;
-  $('#compte').html(words+' mots');
+  //var words = editor.match(/\S+/g).length;
+  //$('#compte').html(words+' mots');
   if(declencheur){
     if(open == "false"){
 
@@ -387,6 +387,20 @@ saveAsMd();
 event.preventDefault();
 return false;
 });
+window.onbeforeunload = function(e) {
+    var remote = require('remote');
+    var dialog = remote.require('dialog');
+    var choice = dialog.showMessageBox(
+            remote.getCurrentWindow(),
+            {
+                type: 'question',
+                buttons: ['Yes', 'No'],
+                title: 'Confirm',
+                message: 'Are you sure you want to quit?'
+            });
+
+    return choice === 0;
+};
 function httpGet(theUrl)
 {
 var xmlHttp = new XMLHttpRequest();

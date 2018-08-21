@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="assets/css/style.css">
     <script>window.$ = window.jQuery = require('jquery');</script>
   </head>
-  <body id="body" onload="onLoad()">
+  <body id="body" onload="onLoad()" >
     <input type="hidden" id="paramPreview" value="true">
     <input type="hidden" id="bottomHidden" value="true">
     <input type="hidden" id="leftHidden" value="true">
@@ -105,7 +105,7 @@
       <button class="btn btn-link btn-sm" data-toggle="tooltip" data-placement="top" title="Ajouter une citation" onclick="insertB('> ')"><i class="fa fa-quote-left"></i></button>
       <button class="btn btn-link btn-sm" data-toggle="tooltip" data-placement="top" title="Ajouter un schéma UML" onclick="insertA('@startuml\nbob->toto\nbob -->toto\ntoto --X bob\n@enduml')">UML Schéma</button>
 </div>
-      <div  class="col-md-2 row"><div id="compte">0 mot</div>
+     <div  class="col-md-2 row"><!--<div id="compte">0 mot</div> -->
 
       <div class="dropup">
         <button class="btn btn-link btn-sm dropdown-toggle" title="Exporter le document"  type="button" id="dropdownMenuButton3" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

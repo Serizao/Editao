@@ -21,14 +21,53 @@ function createWindow () {
   // mainWindow.webContents.openDevTools()
 
   // Emitted when the window is closed.
-  mainWindow.on('closed', function () {
+  mainWindow.on('closed', function (event) {
+
+   // Dereference the window object, usually you would store windows
+   // in an array if your app supports multi windows, this is the time
+   // when you should delete the corresponding element.
+   app.quit()
+   mainWindow = null
+ })
+  mainWindow.on('close', function (event) {
+
     // Dereference the window object, usually you would store windows
     // in an array if your app supports multi windows, this is the time
     // when you should delete the corresponding element.
-    mainWindow = null
-    app.quit();
+    event.preventDefault()
+    this.test = false
+    data =asyncCheckSave()
+    console.log(data,this.test);
+    if(data == false){
+    var choice = dialog.showMessageBox(this,
+       {
+         type: 'question',
+         buttons: ['Yes', 'No'],
+         title: 'Confirm',
+         message: 'Are you sure you want to quit?'
+      });
+      if(choice == 1){
+        event.preventDefault();
+      }
+    }else if(data == true){
+
+    } else {
+      event.preventDefault();
+
+    }
   })
 createWorker();
+}
+function checkSave() {
+  return new Promise(resolve => {
+      mainWindow.webContents.executeJavaScript("Saved();",false).then((result) => { this.test=result;console.log(result)});
+      resolve(this.test);
+  });
+}
+
+async function asyncCheckSave(){
+  var toto = await checkSave();
+return toto
 }
 function createWorker(){
   workerWindow = new BrowserWindow();
