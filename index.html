@@ -14,8 +14,12 @@
     <input type="hidden" id="bottomHidden" value="true">
     <input type="hidden" id="leftHidden" value="true">
     <input type="hidden" id="emplacement" value="true">
+    <input type="hidden" id="contextMenu" value="false">
+    <input type="hidden" id="selectedContextMenu" value="false">
+    <input type="hidden" id="lengthContextMenu" value="2">
     <input type="hidden" id="saved" value="false">
     <input type="hidden" id="path" value="">
+    <input type="hidden" id="backOrder" value="">
     <div id="display"></div>
     <div class="container no-margin">
       <div class="leftMenu col-md-3">
@@ -29,15 +33,20 @@
         </ul>
       </div>
       <div id="expandSideMenu" class=""><a href="#" onclick="displayleftMenu()"> > </a></div>
-      <div class="row f-height no-margin">
+      <div class="row f-height no-margin" id="main">
         <div class="editorSide col-md-6">
+          <div id="flyingMenu">
+
+              <li id="liContextMenu0">Taper une lettre pour voir les prospositions</li>
+          </ul></div>
           <textarea class="editor" id="editor" onkeyup="generatePreview()" onchange="generatePreview()"></textarea>
         </div>
-        <div id="preview" class="previewSide col-md-6">
+        <div id="preview" class="previewSide col-md-6 markdown-body">
         </div>
       </div>
     </div>
     <div id="bottom-bar"  class="row bottom-bar">
+      <div class="col-md-10 row">
       <div class="dropup">
         <button class="btn btn-link btn-sm dropdown-toggle"   title="Les titres" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           Titre
@@ -57,6 +66,7 @@
     <!--  <button class="btn btn-link btn-sm" onclick="souligne()"><u>Souligné</u></button>-->
       <button class="btn btn-link btn-sm"  onclick="insertBoth('^','^','e')">e<sup>x</sup></button>
       <button class="btn btn-link btn-sm" onclick="insertBoth('~','~','e')">e<sub>x</sub></button>
+      <button class="btn btn-link btn-sm" onclick="insertBoth('[^1]\:[^1]','','')">Pied de page</button>
       <div class="dropup">
         <button class="btn btn-link btn-sm dropdown-toggle"  title="Les listes" type="button" id="dropdownMenuButton2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           <i class="fa fa-list-ul"></i>
@@ -94,6 +104,9 @@
       <button class="btn btn-link btn-sm" data-toggle="tooltip" data-placement="top" title="Ajouter un lien" onclick="insertA('[nom du lien](http://)')"><i class="fa fa-link"></i></button>
       <button class="btn btn-link btn-sm" data-toggle="tooltip" data-placement="top" title="Ajouter une citation" onclick="insertB('> ')"><i class="fa fa-quote-left"></i></button>
       <button class="btn btn-link btn-sm" data-toggle="tooltip" data-placement="top" title="Ajouter un schéma UML" onclick="insertA('@startuml\nbob->toto\nbob -->toto\ntoto --X bob\n@enduml')">UML Schéma</button>
+</div>
+      <div  class="col-md-2 row"><div id="compte">0 mot</div>
+
       <div class="dropup">
         <button class="btn btn-link btn-sm dropdown-toggle" title="Exporter le document"  type="button" id="dropdownMenuButton3" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           <i class="fa fa-upload"></i>
@@ -106,7 +119,8 @@
       <button class="btn btn-link btn-sm" data-toggle="tooltip" data-placement="top" title="Sauvegarder" onclick="saveAsMd()"><i class="fa fa-save"></i></button>
       <button class="btn btn-link btn-sm" data-toggle="tooltip" data-placement="top" title="Ouvrir un fichier" onclick="openFile()"><i class="fa fa-folder-open"></i></button>
       <button class="btn btn-outline-primary btn-sm" id="previewButton" data-toggle="tooltip" data-placement="top" title="Activer/Désactiver la prévisulisation" onclick="hidePreview()"><i class="fa fa-columns"></i></button>
-    </div>
+      <!--  <button class="btn btn-outline-primary btn-sm" id="livePreviewButton" data-toggle="tooltip" data-placement="top" title="Prévisualisation live" onclick="livePreview()"><i class="fa fa-book-reader"></i></button>-->
+    </div></div>
     <!-- Modal -->
     <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog" role="document">
@@ -135,7 +149,9 @@
     <script src="node_modules/bootstrap/dist/js/bootstrap.js"></script>
     <script src="node_modules/html-docx-js/dist/html-docx.js"></script>
     <script src="assets/js/FileSaver.js"></script>
+    <script src="assets/js/textarea-helper.js"></script>
     <script src="assets/js/renderer.js"></script>
+
     <script>
   //  require('./renderer.js')
    </script>
