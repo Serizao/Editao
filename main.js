@@ -12,7 +12,7 @@ let mainWindow
 let workerWindow
 function createWindow () {
   // Create the browser window.
-  mainWindow = new BrowserWindow({height:600,width:1024,minWidth: 1024, minHeight:600,titleBarStyle: 'hidden', icon: path.join(__dirname, 'assets/icons/png/64x64.png')})
+  mainWindow = new BrowserWindow({height:600,width:1034,minWidth: 1034, minHeight:600,titleBarStyle: 'hidden', icon: path.join(__dirname, 'assets/icons/png/64x64.png')})
 
   // and load the index.html of the app.
   mainWindow.loadFile('index.html')
@@ -29,7 +29,21 @@ function createWindow () {
   //app.quit()
    mainWindow = null
  })
-  mainWindow.on('close', function (event) {
+
+ mainWindow.on('close', function(e){
+    var choice = require('electron').dialog.showMessageBox(this,
+        {
+          type: 'question',
+          buttons: ['Yes', 'No'],
+          title: 'Confirm',
+          message: 'Are you sure you want to quit?'
+       });
+       if(choice == 1){
+         e.preventDefault();
+       }
+    });
+
+//  mainWindow.on('close', function (event) {
  //
  // mainWindow.webContents.executeJavaScript("Saved();",false).then((result) => {
  //     if(result){
@@ -40,8 +54,8 @@ function createWindow () {
  //       event.preventDefault();
  //     }
 
-app.quit()
-   });
+// app.quit()
+//    });
     // Dereference the window object, usually you would store windows
     // in an array if your app supports multi windows, this is the time
     // when you should delete the corresponding element.

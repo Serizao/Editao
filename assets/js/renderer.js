@@ -14,7 +14,7 @@ const possibility = [ ['image','![]()',1],
                       ['fleches ==> ',' ==>'],
                       ['fleches <--> ',' <-->'],
                       ['fleches <==> ',' <==>'],
-                      ['code','``````',3],
+                      ['code','```\\n```',4],
                       ['t1','# '],
                       ['t2','## '],
                       ['t3','### '],
@@ -542,12 +542,29 @@ $('.leftMenu').css('left','-600px');
 //     $('#main').removeClass('row')
 //   }
 // }
-window.addEventListener('beforeunload', onbeforeunload);
-function onbeforeunload(e) {
-  console.log(Saved());
-  if(!Saved()){
-   if (!confirm("Le document actuel n'est pas sauvegardé voulez vous le fermer quand même ?")) {
-      e.returnValue = "false"
-   }
- }
-}
+
+//
+//
+// window.onbeforeunload = function(e) {
+//   const dialog = require('electron').remote
+//   var choice = dialog.showMessageBox(this,
+//            {
+//              type: 'question',
+//              buttons: ['Yes', 'No'],
+//              title: 'Confirm',
+//              message: 'Are you sure you want to quit?'
+//           });
+//
+//     return choice === 0;
+// };
+
+// window.addEventListener('beforeunload', unload);
+// function onbeforeunload(e) {
+//   console.log(Saved());
+//   if(!Saved()){
+//    if (!confirm("Le document actuel n'est pas sauvegardé voulez vous le fermer quand même ?")) {
+//       e.returnValue = "false"
+//       return false
+//    }
+//  }
+// }
