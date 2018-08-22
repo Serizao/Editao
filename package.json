@@ -1,10 +1,15 @@
 {
   "name": "Editao",
   "version": "1.0.0",
+  "productName": "Editao",
   "description": "A minimal mardown editor",
   "main": "main.js",
   "scripts": {
-    "start": "electron ."
+    "start": "electron .",
+    "package-mac": "electron-packager . --overwrite --platform=darwin --arch=x64 --icon=assets/icons/png/128x128.png  --prune=true --out=release-builds",
+    "package-win": "electron-packager . Editao --overwrite --asar=true --platform=win32 --arch=ia32 --icon=assets/icons/logo.ico  --prune=true --out=release-builds --version-string.CompanyName=CE --version-string.FileDescription=CE --version-string.ProductName=Editao",
+    "package-linux": "electron-packager . Editao --overwrite --asar=true --platform=linux --arch=x64 --icon=assets/icons/logo.ico --prune=true --out=release-builds",
+     "create-installer-win": "node installers/windows-installer.js"
   },
   "repository": "https://github.com/Serizao/Editao",
   "keywords": [
@@ -16,7 +21,8 @@
   "author": "Serizao",
   "license": "BSD",
   "devDependencies": {
-    "electron": "^2.0.0"
+    "electron": "^2.0.0",
+    "electron-winstaller": "^2.6.4"
   },
   "dependencies": {
     "bootstrap": "^4.1.3",
@@ -24,6 +30,7 @@
     "highlight.js": "^9.12.0",
     "html-docx-js": "^0.3.1",
     "html2docx": "^0.1.3",
+    "install": "^0.12.1",
     "jquery": "^3.3.1",
     "markdown-it": "^8.4.2",
     "markdown-it-anchor": "^5.0.2",
@@ -32,8 +39,6 @@
     "markdown-it-emoji": "^1.4.0",
     "markdown-it-footnote": "^3.0.1",
     "markdown-it-imsize": "^2.0.1",
-    "markdown-it-mermaid": "^0.2.5",
-    "markdown-it-mermaid-real": "0.0.7",
     "markdown-it-multimd-table": "^3.1.3",
     "markdown-it-plantuml": "^1.2.0",
     "markdown-it-plantuml-offline": "^1.0.2",
