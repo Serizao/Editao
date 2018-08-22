@@ -238,6 +238,7 @@ function onLoad(){
 setInterval(hideMenu, 6000);
 addEventListener('mousemove', mouse, false);
 document.getElementById('editor').focus()
+
 }
 function hideMenu(){
 
@@ -295,6 +296,7 @@ ipc.on('wrote-pdf', function (event, path) {
 $('#path').val(path);
 display('success',' Votre fichier a bien été sauvegardé')
 })
+
 function display(state,msg,time=true){
 add='';
 if(state=='success'){
@@ -387,20 +389,6 @@ saveAsMd();
 event.preventDefault();
 return false;
 });
-window.onbeforeunload = function(e) {
-    var remote = require('remote');
-    var dialog = remote.require('dialog');
-    var choice = dialog.showMessageBox(
-            remote.getCurrentWindow(),
-            {
-                type: 'question',
-                buttons: ['Yes', 'No'],
-                title: 'Confirm',
-                message: 'Are you sure you want to quit?'
-            });
-
-    return choice === 0;
-};
 function httpGet(theUrl)
 {
 var xmlHttp = new XMLHttpRequest();
@@ -554,3 +542,12 @@ $('.leftMenu').css('left','-600px');
 //     $('#main').removeClass('row')
 //   }
 // }
+window.addEventListener('beforeunload', onbeforeunload);
+function onbeforeunload(e) {
+  console.log(Saved());
+  if(!Saved()){
+   if (!confirm("Le document actuel n'est pas sauvegardé voulez vous le fermer quand même ?")) {
+      e.returnValue = "false"
+   }
+ }
+}

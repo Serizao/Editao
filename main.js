@@ -26,49 +26,59 @@ function createWindow () {
    // Dereference the window object, usually you would store windows
    // in an array if your app supports multi windows, this is the time
    // when you should delete the corresponding element.
-   app.quit()
+  //app.quit()
    mainWindow = null
  })
   mainWindow.on('close', function (event) {
+ //
+ // mainWindow.webContents.executeJavaScript("Saved();",false).then((result) => {
+ //     if(result){
+ //       console.log('acceptClose')
+ //       app.quit()
+ //     } else {
+ //       console.log('blockClose')
+ //       event.preventDefault();
+ //     }
 
+app.quit()
+   });
     // Dereference the window object, usually you would store windows
     // in an array if your app supports multi windows, this is the time
     // when you should delete the corresponding element.
-    event.preventDefault()
-    this.test = false
-    data =asyncCheckSave()
-    console.log(data,this.test);
-    if(data == false){
-    var choice = dialog.showMessageBox(this,
-       {
-         type: 'question',
-         buttons: ['Yes', 'No'],
-         title: 'Confirm',
-         message: 'Are you sure you want to quit?'
-      });
-      if(choice == 1){
-        event.preventDefault();
-      }
-    }else if(data == true){
 
-    } else {
-      event.preventDefault();
 
-    }
-  })
+
+
 createWorker();
 }
-function checkSave() {
-  return new Promise(resolve => {
-      mainWindow.webContents.executeJavaScript("Saved();",false).then((result) => { this.test=result;console.log(result)});
-      resolve(this.test);
-  });
-}
+// async function checkSave() {
+//
+//     var titi =  mainWindow.webContents.executeJavaScript("Saved();",false).then((result) => { return result;});
+//       setTimeout(console.log(titi), 100)
+//
+// }
+// async function sleep2() {
+// await checkSave()
+// console.log(this.test)
+// if(!this.test){
+//   console.log(this.test)
+//   var choice = dialog.showMessageBox(this,
+//          {
+//            type: 'question',
+//            buttons: ['Yes', 'No'],
+//            title: 'Confirm',
+//            message: 'Are you sure you want to quit?'
+//         });
+//         if(choice == 1){
+//           return false
+//         }
+//       }
+//       return true
+// }
+// function sleep(ms) {
+//   return new Promise(resolve => setTimeout(resolve, ms));
+// }
 
-async function asyncCheckSave(){
-  var toto = await checkSave();
-return toto
-}
 function createWorker(){
   workerWindow = new BrowserWindow();
   workerWindow.loadURL("file://" + __dirname + "/worker.html");
